@@ -135,7 +135,7 @@ SELECT DISTINCT
 /* below select generated pivot queries */
 /*select distinct ',['+Gene+']',',coalesce(['+Gene+'],0) as ['+Gene+']' from prePivot*/
 select
-piv.Report_Description
+piv.Report_Description as Strain
 /* generated code from here */
 ,coalesce([CDS],0) as [CDS]
 ,coalesce([CDS Known (Categorised)],0) as [CDS Known (Categorised)]
