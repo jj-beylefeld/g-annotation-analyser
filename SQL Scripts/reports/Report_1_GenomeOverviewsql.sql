@@ -79,12 +79,12 @@ SELECT DISTINCT
 
 	select
 	Report_Description
-	,'5SrRNA' Gene
+	,'5S rRNA' Gene
 	, Count(*) AS Counted
 	from
 	cte
 	where gene = 'RNA'
-	and name like '%5S%'
+	and name like '%5S rRNA%'
 	group by
 	Report_Description
 	,Gene
@@ -93,7 +93,7 @@ SELECT DISTINCT
 
 	select
 	Report_Description
-	,'LSU' Gene
+	,'23S rRNA' Gene
 	, Count(*) AS Counted
 	from
 	cte
@@ -107,7 +107,7 @@ SELECT DISTINCT
 
 	select
 	Report_Description
-	,'SSU' Gene
+	,'16S rRNA' Gene
 	, Count(*) AS Counted
 	from
 	cte
@@ -117,43 +117,43 @@ SELECT DISTINCT
 	Report_Description
 	,Gene
 
-  )
-select * from cte_gene
-where Gene like '%cds%'
-union
-select * from cte_cds_hypo 
-union
-select * from cte_cds_knownC  
-union
-select * from cte_cds_knownU  
---union
---select * from cte_rna_5s  
---union
---select * from cte_rna_LSU  
---union
---select * from cte_rna_SSU
-
---select * from cte_gene  
-  --,prePivot AS (
-
-/*
-)select
-*
+  ),prePivot as (
+	select * from cte_gene
+	union
+	select * from cte_cds_hypo 
+	union
+	select * from cte_cds_knownC  
+	union
+	select * from cte_cds_knownU  
+	union
+	select * from cte_rna_5s  
+	union
+	select * from cte_rna_LSU  
+	union
+	select * from cte_rna_SSU
+)
+/* below select generated pivot queries */
+/*select distinct ',['+Gene+']',',coalesce(['+Gene+'],0) as ['+Gene+']' from prePivot*/
+select
+piv.Report_Description
 /* generated code from here */
---,coalesce([B1064_14_H3],0) as [B1064_14_H3]
---,coalesce([B1064_14_H4],0) as [B1064_14_H4]
---,coalesce([B1064_14_H5],0) as [B1064_14_H5]
---,coalesce([B1393_14_10],0) as [B1393_14_10]
---,coalesce([B1394_14_2],0) as [B1394_14_2]
---,coalesce([B1394_14_5],0) as [B1394_14_5]
---,coalesce([B2214_07],0) as [B2214_07]
---,coalesce([B458_15_1],0) as [B458_15_1]
---,coalesce([B458_15_11],0) as [B458_15_11]
---,coalesce([B458_15_5M],0) as [B458_15_5M]
---,coalesce([B458_15_6],0) as [B458_15_6]
---,coalesce([M Synoviae strain 53],0) as [M Synoviae strain 53]
+,coalesce([CDS],0) as [CDS]
+,coalesce([CDS Known (Categorised)],0) as [CDS Known (Categorised)]
+,coalesce([CDS Known (Uncategorised)],0) as [CDS Known (Uncategorised)]
+,coalesce([CDS Hypothetic],0) as [CDS Hypothetic]
+,coalesce([tRNA],0) as [tRNA]
+,coalesce([RNA],0) as [RNA]
+,coalesce([5S rRNA],0) as [5S rRNA]
+,coalesce([16S rRNA],0) as [16S rRNA]
+,coalesce([23S rRNA],0) as [23S rRNA]
+/* dependent result*/
+,coalesce([RNA],0) - (coalesce([5S rRNA],0) +coalesce([16S rRNA],0)+coalesce([23S rRNA],0) ) ncRNA
+
+
 from
 prePivot
-pivot ( /*select ',['+Report_Description+']',',coalesce(['+Report_Description+'],0) as ['+Report_Description+']' from FileInfo*/
-	max(Counted) for Report_Description in ([B1064_14_H3],[B1064_14_H4],[B1064_14_H5],[B1393_14_10],[B1394_14_2],[B1394_14_5],[B2214_07],[B458_15_1],[B458_15_11],[B458_15_5M],[B458_15_6],[M Synoviae strain 53])
-) piv*/
+pivot ( 
+	/*select ',['+Gene+']',',coalesce(['+Gene+'],0) as ['+Gene+']' from FileInfo*/
+	/*select ',['+Report_Description+']',',coalesce(['+Report_Description+'],0) as ['+Report_Description+']' from FileInfo*/
+	max(Counted) for Gene in ([16S rRNA],[23S rRNA],[5S rRNA],[CDS Hypothetic],[CDS Known (Categorised)],[CDS Known (Uncategorised)],[CDS],[RNA],[tRNA])
+) piv
