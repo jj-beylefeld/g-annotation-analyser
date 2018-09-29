@@ -119,18 +119,19 @@ SELECT DISTINCT
 
   )
 select * from cte_gene
+where Gene like '%cds%'
 union
 select * from cte_cds_hypo 
 union
 select * from cte_cds_knownC  
 union
 select * from cte_cds_knownU  
-union
-select * from cte_rna_5s  
-union
-select * from cte_rna_LSU  
-union
-select * from cte_rna_SSU
+--union
+--select * from cte_rna_5s  
+--union
+--select * from cte_rna_LSU  
+--union
+--select * from cte_rna_SSU
 
 --select * from cte_gene  
   --,prePivot AS (
