@@ -1,12 +1,14 @@
-declare @tablename varchar(50) = 'B2214_07'
-declare @filename varchar(2000) = 'C:\Personal\Amanda\sql\comparitiveAn\msgff\'+@tablename+'.gff'
+declare @tablename varchar(50) = 'MGstrain53_RAST_233150_3'
+declare @M_Type_No int = 2
+
+declare @filename varchar(2000) = 'C:\Personal\Amanda\Amanda-PhD\MG\GFF\'+@tablename+'.gff'
 
 declare @tmp varchar(300) ;
 select @tmp = reverse(substring(reverse(@filename),1,charindex('\',reverse(@filename)) -1 ))
 
 
-insert into FileInfo (File_Name, Report_Description) 
-select @filename ,replace(@tmp,'.gff','') Report_Description
+insert into FileInfo (M_Type_No,File_Name, Report_Description) 
+select @M_Type_No,@filename ,replace(@tmp,'.gff','') Report_Description
 
 declare @sql nvarchar(max) =
 'declare @fileNo int = (select File_No from FileInfo where Report_Description='''+@tablename+''')

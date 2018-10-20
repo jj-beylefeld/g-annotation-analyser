@@ -17,6 +17,7 @@ FI.File_No
   --left join Category C on FD.Name
   where Gene= coalesce(@Gene,Gene)
   AND MT.M_Type_Name = coalesce(@M_Type,MT.M_Type_Name)
+  And FI.IgnoreCompAna = 0
   )
 select 
 Report_Description

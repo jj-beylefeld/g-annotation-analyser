@@ -17,6 +17,7 @@ FI.File_No
   left join Category C on FD.Name = C.Role_Name
   where Gene='CDS'
   and C.Category is null
+  And FI.IgnoreCompAna = 0
   )
 select 
 *
@@ -26,4 +27,4 @@ and name not like '%/%'
 order by Report_Description,Name
 
 
-select * from Category where Role_Name like '%mobil%'
+--select * from Category where Role_Name like '%mobil%'

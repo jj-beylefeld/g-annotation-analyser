@@ -1,4 +1,4 @@
-DECLARE @M_Type varchar(50) =null-- 'MS'
+DECLARE @M_Type varchar(50) = 'MS'
 ,@Gene varchar(20) = 'CDS'
 
 ;with cte as (
@@ -18,6 +18,7 @@ FI.File_No
   where Gene= coalesce(@Gene,Gene)
   AND MT.M_Type_Name = coalesce(@M_Type,MT.M_Type_Name)
   and name not like '%hypoth%'
+  And FI.IgnoreCompAna = 0
   )
 select 
 Report_Description

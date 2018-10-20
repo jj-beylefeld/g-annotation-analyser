@@ -1,4 +1,4 @@
-DECLARE @M_Type varchar(50) = 'MS'
+DECLARE @M_Type varchar(50) = 'MG'
 ,@Gene varchar(20) = null--'CDS'
 
 ;WITH cte AS (
@@ -10,12 +10,14 @@ SELECT DISTINCT
 	, [End]
 	, Strand
 	, Name
+	, Ontology
 	FROM [AmandaTasks].[dbo].[FileData] FD
 	JOIN FileInfo FI ON FI.File_no = FD.File_No
 	join M_Types MT on MT.M_Type_No = FI.M_Type_No
   --LEFT JOIN Category C ON FD.Name = C.Role_Name
   WHERE Gene= coalesce(@Gene,Gene)
   AND MT.M_Type_Name = coalesce(@M_Type,MT.M_Type_Name)
+  And FI.IgnoreCompAna = 0
   ),cte_gene as (
 
 	select
@@ -84,7 +86,8 @@ SELECT DISTINCT
 	from
 	cte
 	where gene = 'RNA'
-	and name like '%5S rRNA%'
+	and (name like '%5S rRNA%'
+	or Ontology like '%5S rRNA%')
 	group by
 	Report_Description
 	,Gene
@@ -98,7 +101,8 @@ SELECT DISTINCT
 	from
 	cte
 	where gene = 'RNA'
-	and name like '%LSU%'
+	and (name like '%LSU%'
+	or Ontology like '%LSU%')
 	group by
 	Report_Description
 	,Gene
@@ -112,7 +116,8 @@ SELECT DISTINCT
 	from
 	cte
 	where gene = 'RNA'
-	and name like '%SSU%'
+	and (name like '%SSU%'
+	OR Ontology  like '%SSU%')
 	group by
 	Report_Description
 	,Gene
